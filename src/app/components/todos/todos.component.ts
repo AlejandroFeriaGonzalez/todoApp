@@ -8,7 +8,7 @@ import { TodoFilter } from '../../models/todo.model';
 @Component({
   selector: 'app-todos',
   imports: [CommonModule, FormsModule, TodoItemComponent],
-  templateUrl: './todos.component.html'
+  templateUrl: './todos.component.html',
 })
 export class TodosComponent {
   todoService = inject(TodoService);
@@ -32,6 +32,6 @@ export class TodosComponent {
   }
 
   hasCompleted() {
-    return this.todoService.todos().some(t => t.completed);
+    return this.todoService.todos().some((t) => t.completed);
   }
 }

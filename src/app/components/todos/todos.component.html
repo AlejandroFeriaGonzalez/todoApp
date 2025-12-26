@@ -1,80 +1,108 @@
-<div class="min-h-screen w-full flex justify-center p-4 pt-20">
-  <div class="w-full max-w-2xl animate-in fade-in zoom-in-95 duration-500">
-
+<div class="flex min-h-screen w-full justify-center p-4 pt-20">
+  <div class="animate-in fade-in zoom-in-95 w-full max-w-2xl duration-500">
     <!-- Header -->
     <header class="mb-8 text-center">
       <h1
-        class="text-5xl font-extrabold mb-2 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent drop-shadow-sm">
+        class="mb-2 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-5xl font-extrabold text-transparent drop-shadow-sm"
+      >
         Todo<span class="font-light text-white/80">List</span>
       </h1>
-      <p class="text-gray-400 text-lg">Stay organized, get things done.</p>
+      <p class="text-lg text-gray-400">Stay organized, get things done.</p>
     </header>
 
     <!-- Input Area -->
-    <div class="mb-8 relative group">
+    <div class="group relative mb-8">
       <div
-        class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-50 group-focus-within:opacity-100 transition duration-300 blur-sm">
-      </div>
-      <div class="relative flex items-center bg-gray-900 rounded-xl p-2 shadow-2xl">
-        <input type="text" placeholder="What needs to be done?"
-          class="w-full bg-transparent text-white placeholder-gray-500 px-4 py-3 text-lg focus:outline-none"
-          [value]="newTodoText()" (input)="updateText($event)" (keydown.enter)="addTodo()" #todoInput />
-        <button (click)="addTodo()" [disabled]="!newTodoText().trim()"
-          class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+        class="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 opacity-50 blur-sm transition duration-300 group-focus-within:opacity-100"
+      ></div>
+      <div class="relative flex items-center rounded-xl bg-gray-900 p-2 shadow-2xl">
+        <input
+          type="text"
+          placeholder="What needs to be done?"
+          class="w-full bg-transparent px-4 py-3 text-lg text-white placeholder-gray-500 focus:outline-none"
+          [value]="newTodoText()"
+          (input)="updateText($event)"
+          (keydown.enter)="addTodo()"
+          #todoInput
+        />
+        <button
+          (click)="addTodo()"
+          [disabled]="!newTodoText().trim()"
+          class="transform rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-2 font-semibold text-white transition-all duration-200 hover:scale-105 hover:from-purple-400 hover:to-pink-400 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+        >
           Add
         </button>
       </div>
     </div>
 
     <!-- Filters & Stats -->
-    <div class="flex flex-col sm:flex-row items-center justify-between mb-6 px-2 gap-4 text-sm text-gray-400">
+    <div
+      class="mb-6 flex flex-col items-center justify-between gap-4 px-2 text-sm text-gray-400 sm:flex-row"
+    >
       <span>{{ todoService.activeCount() }} items left</span>
 
-      <div class="flex items-center bg-white/5 rounded-lg p-1 gap-1 backdrop-blur-sm border border-white/5">
+      <div
+        class="flex items-center gap-1 rounded-lg border border-white/5 bg-white/5 p-1 backdrop-blur-sm"
+      >
         @for (filter of filters; track filter) {
-        <button (click)="setFilter(filter)" class="px-4 py-1.5 rounded-md transition-all duration-200 capitalize"
-          [class.bg-white/10]="todoService.filterSignal() === filter"
-          [class.text-white]="todoService.filterSignal() === filter"
-          [class.shadow-sm]="todoService.filterSignal() === filter"
-          [class.hover:text-gray-200]="todoService.filterSignal() !== filter">
-          {{ filter }}
-        </button>
+          <button
+            (click)="setFilter(filter)"
+            class="rounded-md px-4 py-1.5 capitalize transition-all duration-200"
+            [class.bg-white/10]="todoService.filterSignal() === filter"
+            [class.text-white]="todoService.filterSignal() === filter"
+            [class.shadow-sm]="todoService.filterSignal() === filter"
+            [class.hover:text-gray-200]="todoService.filterSignal() !== filter"
+          >
+            {{ filter }}
+          </button>
         }
       </div>
 
       @if (hasCompleted()) {
-      <button (click)="todoService.clearCompleted()" class="hover:text-red-400 transition-colors">
-        Clear completed
-      </button>
+        <button (click)="todoService.clearCompleted()" class="transition-colors hover:text-red-400">
+          Clear completed
+        </button>
       } @else {
-      <div class="w-24"></div> <!-- Spacer to keep layout stable -->
+        <div class="w-24"></div>
+        <!-- Spacer to keep layout stable -->
       }
     </div>
 
     <!-- Todo List -->
     <div class="space-y-1">
       @for (todo of todoService.filteredTodos(); track todo.id) {
-      <app-todo-item [todo]="todo" (toggle)="todoService.toggleTodo($event)"
-        (remove)="todoService.removeTodo($event)" />
+        <app-todo-item
+          [todo]="todo"
+          (toggle)="todoService.toggleTodo($event)"
+          (remove)="todoService.removeTodo($event)"
+        />
       } @empty {
-      <div class="text-center py-16 text-gray-500">
-        @if (todoService.filterSignal() === 'completed') {
-        <p>No completed items yet.</p>
-        } @else if (todoService.filterSignal() === 'active') {
-        <p>No active items! Great job.</p>
-        } @else {
-        <div class="flex flex-col items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-4 opacity-20" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-          <p>Your list is empty. Start by adding a task!</p>
+        <div class="py-16 text-center text-gray-500">
+          @if (todoService.filterSignal() === 'completed') {
+            <p>No completed items yet.</p>
+          } @else if (todoService.filterSignal() === 'active') {
+            <p>No active items! Great job.</p>
+          } @else {
+            <div class="flex flex-col items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mb-4 h-16 w-16 opacity-20"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              <p>Your list is empty. Start by adding a task!</p>
+            </div>
+          }
         </div>
-        }
-      </div>
       }
     </div>
-
   </div>
 </div>

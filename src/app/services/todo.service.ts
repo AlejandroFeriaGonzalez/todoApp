@@ -3,7 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Todo, TodoFilter } from '../models/todo.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoService {
   private readonly storageKey = 'angular-todo-app-v1';
@@ -22,17 +22,15 @@ export class TodoService {
 
     switch (filter) {
       case 'active':
-        return todos.filter(t => !t.completed);
+        return todos.filter((t) => !t.completed);
       case 'completed':
-        return todos.filter(t => t.completed);
+        return todos.filter((t) => t.completed);
       default:
         return todos;
     }
   });
 
-  activeCount = computed(() =>
-    this.todosSignal().filter(t => !t.completed).length
-  );
+  activeCount = computed(() => this.todosSignal().filter((t) => !t.completed).length);
 
   constructor() {
     effect(() => {
@@ -46,19 +44,19 @@ export class TodoService {
       id: crypto.randomUUID(),
       text,
       completed: false,
-      createdAt: Date.now()
+      createdAt: Date.now(),
     };
-    this.todosSignal.update(todos => [newTodo, ...todos]);
+    this.todosSignal.update((todos) => [newTodo, ...todos]);
   }
 
   toggleTodo(id: string): void {
-    this.todosSignal.update(todos =>
-      todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t)
+    this.todosSignal.update((todos) =>
+      todos.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
     );
   }
 
   removeTodo(id: string): void {
-    this.todosSignal.update(todos => todos.filter(t => t.id !== id));
+    this.todosSignal.update((todos) => todos.filter((t) => t.id !== id));
   }
 
   updateFilter(filter: TodoFilter): void {
@@ -66,7 +64,7 @@ export class TodoService {
   }
 
   clearCompleted(): void {
-    this.todosSignal.update(todos => todos.filter(t => !t.completed));
+    this.todosSignal.update((todos) => todos.filter((t) => !t.completed));
   }
 
   // Persistence

@@ -8,11 +8,15 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:todoApp": "node dist/todoApp/server/server.mjs",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "format": "prettier --write ."
   },
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ],
     "overrides": [
       {
         "files": "*.html",
@@ -48,6 +52,8 @@
     "eslint": "^9.39.1",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.9.2",
     "typescript-eslint": "8.47.0",
