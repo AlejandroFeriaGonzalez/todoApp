@@ -9,6 +9,6 @@ import { Todo } from '../../models/todo.model';
 })
 export class TodoItemComponent {
   todo = input.required<Todo>();
-  toggle = output<string>();
+  toggleComplete = output<string>();
   remove = output<string>();
 }

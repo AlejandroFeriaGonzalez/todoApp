@@ -73,7 +73,7 @@
       @for (todo of todoService.filteredTodos(); track todo.id) {
         <app-todo-item
           [todo]="todo"
-          (toggle)="todoService.toggleTodo($event)"
+          (toggleComplete)="todoService.toggleTodo($event)"
           (remove)="todoService.removeTodo($event)"
         />
       } @empty {

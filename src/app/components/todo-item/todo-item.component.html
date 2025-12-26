@@ -3,7 +3,7 @@
 >
   <div class="flex flex-1 items-center gap-4">
     <button
-      (click)="toggle.emit(todo().id)"
+      (click)="toggleComplete.emit(todo().id)"
       class="relative flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all duration-300 focus:ring-2 focus:ring-purple-500/50 focus:outline-none"
       [class.border-purple-500]="todo().completed"
       [class.bg-purple-500]="todo().completed"
@@ -33,7 +33,7 @@
       [class.text-gray-500]="todo().completed"
       [class.line-through]="todo().completed"
       [class.text-gray-100]="!todo().completed"
-      (click)="toggle.emit(todo().id)"
+      (click)="toggleComplete.emit(todo().id)"
     >
       {{ todo().text }}
     </button>
